@@ -1,0 +1,15 @@
+.badge {
+	align-items: center;
+	background: #182b27;
+	border-radius: 17px;
+	display: inline-flex;
+	height: 28px;
+	margin-right: 12px;
+	margin-bottom: 12px;
+	padding: 0 12px 1px;
+	width: fit-content;
+}
+
+.badge:last-of-type {
+	margin-right: 0px;
+}

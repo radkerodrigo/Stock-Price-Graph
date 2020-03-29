@@ -1,0 +1,40 @@
+.goUp, .goDown {
+	display: inline-flex;
+	justify-content: center;
+	letter-spacing: -0.7px;
+	width: 18px;
+}
+
+.goUp {
+	animation: rotate-up 300ms;
+}
+
+.goDown {
+	animation: rotate-down 300ms;
+}
+
+@keyframes rotate-up {
+	0% {
+		transform: translateY(-25px);
+		opacity: 1;
+	} 50% {
+		transform: translateY(25px);
+		opacity: 0;
+	} 100% {
+		transform: translateY(0px);
+		opacity: 1;
+	}
+}
+
+@keyframes rotate-down {
+	0% {
+		transform: translateY(25px);
+		opacity: 1;
+	} 50% {
+		transform: translateY(-25px);
+		opacity: 0;
+	} 100% {
+		transform: translateY(0px);
+		opacity: 1;
+	}
+}
