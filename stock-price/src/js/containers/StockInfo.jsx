@@ -1,14 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import 'Styles/StockInfo';
 import 'Styles/ticker';
 
 const UP_CLASS = 'goUp';
 const DOWN_CLASS = 'goDown';
-
-const variationStyle = {
-	fontSize: 13,
-	fontWeight: 'bold'
-};
 
 export default class StockInfo extends PureComponent {
 	constructor(props) {
@@ -69,7 +65,7 @@ export default class StockInfo extends PureComponent {
 					<span>$</span>
 					{ this.getSpanElements() }
 				</h2>
-				<span style={variationStyle}>
+				<span className={'variation-label'}>
 					{this.getVariation()}
 				</span>
 			</div>

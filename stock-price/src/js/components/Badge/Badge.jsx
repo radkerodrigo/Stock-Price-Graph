@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { memo } from 'react';
-import 'Components/Badge/BadgeStyle';
+import 'Styles/Badge';
 
 const Badge = ({ text }) => (
 	<div className={'badge status-color'}>
