@@ -38,6 +38,10 @@ module.exports = {
 	'object-curly-newline': 'off',
 	'class-methods-use-this': 'off',
 	'prefer-template': 'off',
+	'arrow-parens': 'off',
+	'nonblock-statement-body-position': 'off',
+	'no-magic-numbers': 'off',
+	'jsx-a11y/anchor-is-valid': 'off',
 	'jsx-a11y/label-has-associated-control': 'off',
 	'jsx-a11y/label-has-for': 'off', // deprecated
 	'jsx-a11y/click-events-have-key-events': 'off',

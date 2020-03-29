@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import React, { memo, useEffect } from 'react';
 import Highstock from 'highcharts/highstock';
 import chartOptions from 'Components/Chart/chartOptions';
 
 const getChartData = (stockData, setCurrentInfo, color) => {
 	const data = stockData.map(_data => [new Date(_data.date).getTime(), _data.close]);
-	let config = { ...chartOptions };
+	const config = { ...chartOptions };
 
 	config.series[0].data = data;
 	config.series[0].color = color;
@@ -15,10 +16,18 @@ const getChartData = (stockData, setCurrentInfo, color) => {
 	return config;
 };
 
-export default ({ color, historicalData, setCurrentInfo }) => {
+const LineChart = ({ color, historicalData, setCurrentInfo }) => {
 	useEffect(() => {
 		Highstock.stockChart('chartContainer', getChartData(historicalData, setCurrentInfo, color));
-	}, []);
+	}, [color, historicalData]);
 
 	return <div id={'chartContainer'} />;
 };
+
+LineChart.propTypes = {
+	color: PropTypes.string.isRequired,
+	historicalData: PropTypes.array.isRequired,
+	setCurrentInfo: PropTypes.func.isRequired
+};
+
+export default memo(LineChart);

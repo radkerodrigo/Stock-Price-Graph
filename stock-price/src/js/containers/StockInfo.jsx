@@ -1,8 +1,14 @@
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import 'Styles/ticker';
 
 const UP_CLASS = 'goUp';
 const DOWN_CLASS = 'goDown';
+
+const variationStyle = {
+	fontSize: 13,
+	fontWeight: 'bold'
+};
 
 export default class StockInfo extends PureComponent {
 	constructor(props) {
@@ -11,12 +17,13 @@ export default class StockInfo extends PureComponent {
 		this.previousInfo = null;
 	}
 
-	componentWillUpdate() {
-		this.previousInfo = this.props.currentInfo;
+	componentDidUpdate(prevProps) {
+		this.previousInfo = prevProps.currentInfo;
 	}
 
 	getClass(index) {
-		const current = this.props.currentInfo && this.props.currentInfo.close.toFixed(2)[index];
+		const { currentInfo } = this.props;
+		const current = currentInfo && currentInfo.close.toFixed(2)[index];
 		const previous = this.previousInfo && this.previousInfo.close.toFixed(2)[index];
 
 		if (!previous || !current)
@@ -30,7 +37,10 @@ export default class StockInfo extends PureComponent {
 
 	getSpanElements() {
 		const { currentInfo, historicalData } = this.props;
-		const value = currentInfo ? currentInfo.close.toFixed(2) : historicalData[historicalData.length - 1].close.toFixed(2);
+		let value = currentInfo && currentInfo.close.toFixed(2);
+
+		if (!value)
+			value = historicalData[historicalData.length - 1].close.toFixed(2);
 
 		return [...value].map((current, index) => {
 			const className = this.getClass(index);
@@ -39,6 +49,14 @@ export default class StockInfo extends PureComponent {
 				<span key={`${current}_${index}`} className={className}>{ String(current) }</span>
 			);
 		});
+	}
+
+	getVariation() {
+		const { currentInfo, getVariationValue, historicalData } = this.props;
+		const variation = getVariationValue(historicalData, currentInfo);
+		const sign = Math.sign(variation) === 1 ? '+' : '';
+
+		return `${sign}$${variation}`;
 	}
 
 	render() {
@@ -51,7 +69,21 @@ export default class StockInfo extends PureComponent {
 					<span>$</span>
 					{ this.getSpanElements() }
 				</h2>
+				<span style={variationStyle}>
+					{this.getVariation()}
+				</span>
 			</div>
 		);
 	}
+}
+
+StockInfo.propTypes = {
+	currentInfo: PropTypes.object,
+	getVariationValue: PropTypes.func.isRequired,
+	historicalData: PropTypes.array.isRequired,
+	symbol: PropTypes.string.isRequired
+};
+
+StockInfo.defaultProps = {
+	currentInfo: null
 };

@@ -15,10 +15,10 @@
 
 @keyframes rotate-up {
 	0% {
-		transform: translateY(-25px);
+		transform: translateY(-15px);
 		opacity: 1;
 	} 50% {
-		transform: translateY(25px);
+		transform: translateY(15px);
 		opacity: 0;
 	} 100% {
 		transform: translateY(0px);
@@ -28,10 +28,10 @@
 
 @keyframes rotate-down {
 	0% {
-		transform: translateY(25px);
+		transform: translateY(15px);
 		opacity: 1;
 	} 50% {
-		transform: translateY(-25px);
+		transform: translateY(-15px);
 		opacity: 0;
 	} 100% {
 		transform: translateY(0px);

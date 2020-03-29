@@ -1,9 +1,57 @@
-.positive {
+.positive .status-color {
 	background: #182b27;
 	color: #21ce99;
+	border-color: #21ce99 !important;
 }
 
-.negative {
+.negative .status-color  {
 	background: #2d201f;
 	color: #f45531;
+	border-color: #f45531 !important;
+}
+
+.neutral .status-color  {
+	background: #18272b;
+	color: #2199ce;
+	border-color: #2199ce !important;
+}
+
+.positive .status-hover:hover {
+	color: #21ce99 !important;
+}
+
+.negative .status-hover:hover {
+	color: #f45531 !important;
+}
+
+.neutral .status-hover:hover {
+	color: #2199ce !important;
+}
+
+nav {
+	align-items: center;
+	border-bottom: 1px solid #0e0d0d;
+	display: inline-flex;
+	height: 30px;
+	margin-top: 24px;
+}
+
+.period-selector {
+	color: #FFF !important;
+	background: transparent !important;
+	text-decoration: none;
+	margin: 0 12px;
+	padding-top: 2px;
+	padding-bottom: 3px;
+	font-weight: bold;
+}
+
+.period-selector.selected {
+	border-bottom: 2px solid;
+}
+
+.period-selector:hover {
+	text-decoration: none;
+	cursor: pointer;
+	color: unset;
 }

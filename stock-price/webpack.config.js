@@ -27,11 +27,6 @@ module.exports = {
 					{ loader: 'css-loader' }
 				]
 			},
-			{
-				test: /\.(png|jpg|gif)$/,
-				exclude: /node_modules/,
-				use: { loader: 'file-loader' }
-			},
 		]
 	},
 	plugins: [
@@ -41,7 +36,7 @@ module.exports = {
 		})
 	],
 	resolve: {
-		extensions: ['.js', '.jsx', '.json', '.css'],
+		extensions: ['.js', '.jsx', '.css'],
 		alias: {
 			Components: path.resolve(__dirname, 'src/js/components/'),
 			Containers: path.resolve(__dirname, 'src/js/containers/'),
