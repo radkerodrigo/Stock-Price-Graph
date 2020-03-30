@@ -1,6 +1,6 @@
 export default {
 	chart: {
-		height: 400,
+		height: 360,
 		width: 800,
 		backgroundColor: '#1b1b1d'
 	},

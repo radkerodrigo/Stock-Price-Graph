@@ -1,8 +1,10 @@
-import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { Fragment, PureComponent } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import BadgeList from 'Components/BadgeList/BadgeList';
 import LineChart from 'Components/Chart/LineChart';
 import StockInfo from 'Containers/StockInfo';
-import 'Styles/Home';
+import 'Styles/SymbolInfo';
 
 const homeStyle = {
 	marginLeft: 15,
@@ -21,19 +23,21 @@ const STATUS = {
 	NEUTRAL: 'neutral'
 };
 
-const BADGES_LIST = ['Computer Hardware', '100 Most Popular', 'Computer Software'];
+const API_URL = 'https://financialmodelingprep.com/api/v3';
 
-export default class Home extends PureComponent {
+class SymbolInfo extends PureComponent {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			badgeInfo: null,
 			currentInfo: null,
 			stockData: null,
 			timePeriod: '5Y',
 			variation: STATUS.NEUTRAL
 		};
 
+		this.setBadgeInfo = this.setBadgeInfo.bind(this);
 		this.setCurrentInfo = this.setCurrentInfo.bind(this);
 		this.setStockData = this.setStockData.bind(this);
 		this.setVariation = this.setVariation.bind(this);
@@ -41,6 +45,7 @@ export default class Home extends PureComponent {
 
 	componentDidMount() {
 		this.fetchData();
+		this.fetchBadgeInfo();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -48,6 +53,10 @@ export default class Home extends PureComponent {
 
 		if (timePeriod !== prevState.timePeriod)
 			this.fetchData();
+	}
+
+	setBadgeInfo(badgeInfo) {
+		this.setState({ badgeInfo });
 	}
 
 	setCurrentInfo(currentInfo) {
@@ -88,8 +97,11 @@ export default class Home extends PureComponent {
 	}
 
 	getVariationValue(historicalData, currentInfo) {
-		const initialValue = historicalData[0].close;
+		const initialValue = historicalData && historicalData[0].close;
 		let latestValue = currentInfo && currentInfo.close;
+
+		if (!historicalData)
+			return '0.00';
 
 		if (!latestValue)
 			latestValue = historicalData[historicalData.length - 1].close;
@@ -147,32 +159,43 @@ export default class Home extends PureComponent {
 
 		return (
 			<nav>
-				<a className={commonClass} href={'#'} onClick={this.setTimePeriod.bind(this, '1M')}>1 month</a>
-				<a className={commonClass} href={'#'} onClick={this.setTimePeriod.bind(this, '3M')}>3 months</a>
-				<a className={commonClass} href={'#'} onClick={this.setTimePeriod.bind(this, '1Y')}>1 year</a>
-				<a className={`${commonClass} selected`} href={'#'} onClick={this.setTimePeriod.bind(this, '5Y')}>5 years</a>
+				<div className={commonClass} onClick={this.setTimePeriod.bind(this, '1M')}>1 month</div>
+				<div className={commonClass} onClick={this.setTimePeriod.bind(this, '3M')}>3 months</div>
+				<div className={commonClass} onClick={this.setTimePeriod.bind(this, '1Y')}>1 year</div>
+				<div className={`${commonClass} selected`} onClick={this.setTimePeriod.bind(this, '5Y')}>5 years</div>
 			</nav>
 		);
 	}
 
 	fetchData() {
+		const { location } = this.props;
 		const period = this.getPeriod(this.state.timePeriod);
 		const params = `from=${period.from}&to=${period.to}`;
 
-		fetch(`https://financialmodelingprep.com/api/v3/historical-price-full/AAPL?${params}`)
+		fetch(`${API_URL}/historical-price-full/${location.state.symbol}?${params}`)
 			.then(response => response.json())
 			.then(responseData => this.setStockData(responseData));
 	}
 
-	render() {
-		const { currentInfo, stockData, variation } = this.state;
+	fetchBadgeInfo() {
+		const { location } = this.props;
 
-		if (!stockData)
-			return <span>Loading data...</span>;
+		fetch(`${API_URL}/company/profile/${location.state.symbol}`)
+			.then(response => response.json())
+			.then(({ profile }) => {
+				this.setBadgeInfo([profile.sector, profile.industry, profile.ceo]);
+			});
+	}
+
+	getContent() {
+		const { badgeInfo, currentInfo, stockData, variation } = this.state;
+
+		if (!stockData.historical || !stockData.historical.length)
+			return <span className={'no-info'}>No information available.</span>;
 
 		return (
-			<div style={homeStyle} className={variation}>
-				<BadgeList values={BADGES_LIST} />
+			<Fragment>
+				<BadgeList values={badgeInfo} />
 				<StockInfo
 					currentInfo={currentInfo}
 					historicalData={stockData.historical}
@@ -185,7 +208,27 @@ export default class Home extends PureComponent {
 					setCurrentInfo={this.setCurrentInfo}
 				/>
 				{ this.getPeriodSelectors() }
+			</Fragment>
+		);
+	}
+
+	render() {
+		const { stockData, variation } = this.state;
+
+		if (!stockData)
+			return <span>Loading data...</span>;
+
+		return (
+			<div style={homeStyle} className={variation}>
+				<Link className={'router-link'} to="/">Go back</Link>
+				{ this.getContent() }
 			</div>
 		);
 	}
 }
+
+SymbolInfo.propTypes = {
+	location: PropTypes.object.isRequired
+};
+
+export default withRouter(SymbolInfo);

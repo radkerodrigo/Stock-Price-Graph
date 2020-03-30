@@ -1,0 +1,8 @@
+.ReactVirtualized__Table__row:nth-of-type(odd) {
+	background-color: #2f2f2f;
+}
+
+.ReactVirtualized__Table__row:hover {
+	cursor: pointer;
+	opacity: 0.6;
+}

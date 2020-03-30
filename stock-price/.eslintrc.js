@@ -51,6 +51,7 @@ module.exports = {
 	'react/forbid-prop-types': ['error', { forbid: ['any'] }],
 	'react/jsx-indent': ['error', 'tab'],
 	'react/jsx-indent-props': ['error', 'tab'],
-	'react/jsx-curly-brace-presence': ['off']
+	'react/jsx-curly-brace-presence': ['off'],
+	'react/sort-comp': 'off'
 	},
 };

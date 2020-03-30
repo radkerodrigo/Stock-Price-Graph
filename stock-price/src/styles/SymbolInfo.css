@@ -55,3 +55,17 @@ nav {
 	cursor: pointer;
 	color: unset;
 }
+
+.router-link {
+	color: #FFF;
+	text-decoration: none;
+}
+
+.router-link:hover {
+	text-decoration: underline;
+}
+
+.no-info {
+	display: block;
+    margin-top: 15px;
+}
